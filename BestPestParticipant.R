@@ -1,3 +1,10 @@
+# TODO: Make histogram of all participants' thresholds
+#               and standard deviations?
+# TODO: Figure out a meaningful analysis of results
+# TODO: Make data structure for gaze data
+# TODO: Figure out a way to determine whether gaze was ok close to wanted positions
+
+# PARTICIPANT has members id, T1, T2, T3, T4
 MakeParticipant = function(id, T1, T2, T3, T4)
 {
   participant = list("id" = id, "T1" = T1, "T2" = T2, "T3" = T3, "T4" = T4)
