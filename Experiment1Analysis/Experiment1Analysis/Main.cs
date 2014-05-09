@@ -33,8 +33,10 @@ namespace Experiment1Analysis
 			Console.WriteLine(tt.Threshold);
 */
 
-			Demographics demoTest = new Demographics(new StreamReader("/Users/Thorbjorn/Dropbox/MED6/Results/Pixelation test - TwentyParticipants/Experiments/E1 Best PEST pixelation/Participants/demographic.csv"));
-			Console.Write(demoTest.GetDemographicFromID(25).GameUse);
+			Console.WriteLine((21).ToString("0000"));
+
+			//Demographics demoTest = new Demographics(new StreamReader("/Users/Thorbjorn/Dropbox/MED6/Results/Pixelation test - TwentyParticipants/Experiments/E1 Best PEST pixelation/Participants/demographic.csv"));
+			//Console.Write(demoTest.GetDemographicFromID(25).GameUse);
 
 			/*using(StreamReader observation = new StreamReader("/Users/Thorbjorn/Dropbox/MED6/Results/E1 Best PEST pixelation/Participants/0002/BestPestTrial at 2014-05-08_14-38-24-7246053.csv"))
 			{

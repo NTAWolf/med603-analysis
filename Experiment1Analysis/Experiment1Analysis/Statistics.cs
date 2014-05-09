@@ -88,6 +88,20 @@ namespace Experiment1Analysis
 
 			return (float)sumOfSquaredDifferences;
 		}
+
+		public static float Max(float[] values)
+		{
+			float maxSoFar = values[0];
+			foreach(float v in values)
+			{
+				if(maxSoFar < v)
+				{
+					maxSoFar = v;
+				}
+			}
+
+			return maxSoFar;
+		}
 	}
 }
 

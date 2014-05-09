@@ -89,6 +89,12 @@ namespace Experiment1Analysis
 
 			return smoothedGazeDistances;
 		}
+
+		public float GetMaximumSmoothedGazeDistance(int windowSize)
+		{
+			float[] smoothed = GetSmoothedGazeDistances(windowSize);
+			return Statistics.Max(smoothed);
+		}
 	}
 }
 
