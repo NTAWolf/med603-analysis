@@ -14,6 +14,11 @@ using System.IO;
 
 namespace Experiment1Analysis
 {
+	/*
+	Reads from a string
+	points to the folder
+	
+	 */
 	public class Participant
 	{
 		public List<Trial> trials;
