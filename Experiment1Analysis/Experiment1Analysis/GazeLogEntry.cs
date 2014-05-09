@@ -29,7 +29,7 @@ namespace Experiment1Analysis
 
 		private GazeLogEntry(string[] contents)
 		{
-			//timestamp = DateTime.Parse(contents[0],"HH-mm-ss-fffffff");
+			timestamp = DateTime.ParseExact(contents[0], "HH-mm-ss-fffffff", System.Globalization.CultureInfo.InvariantCulture);
 			x = Single.Parse(contents[1]);
 			y = Single.Parse(contents[2]);
 			ref_x = Single.Parse(contents[3]);
