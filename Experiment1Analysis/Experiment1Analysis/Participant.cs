@@ -24,6 +24,7 @@ namespace Experiment1Analysis
 		public List<Trial> trials;
 		public DemographicData demographics;
 
+		// TODO Test if this constructor works properly with real data. Test Trial contents, and ensure the connection between demographics and trial data is correct.
 		public Participant (string basePath, DemographicData demographics)
 		{
 			this.demographics = demographics;
@@ -33,7 +34,53 @@ namespace Experiment1Analysis
 			// Pair observation and gazelog files
 			string[] files = Directory.GetFiles(path);
 
-			// TODO Get and pair observation and gazelog files, generate Trials.
+			List<string> observationFiles = new List<string>(4);
+			List<string> gazeLogFiles = new List<string>(4);
+
+			foreach(string s in files)
+			{
+				if(s.Contains("gazelog"))
+				{
+					gazeLogFiles.Add(s);
+				}
+				else
+				{
+					observationFiles.Add(s);
+				}
+			}
+
+			observationFiles.Sort(); // To proper order!
+			gazeLogFiles.Sort();
+
+			if(observationFiles.Count == 0)
+			{
+				throw new InvalidDataException("Number of observation files is 0 " +
+				                               "in path " + path);
+			}
+			if( gazeLogFiles.Count == 0)
+			{
+				throw new InvalidDataException("Number of gazelog files is 0 " +
+				                               "in path " + path);
+			}
+			if(observationFiles.Count != gazeLogFiles.Count)
+			{
+				throw new InvalidDataException("Number of observation files (" + observationFiles.Count + 
+				                               ") not matching number of gazelog files (" + gazeLogFiles.Count +
+				                               ") in path " + path);
+			}
+
+			trials = new List<Trial>(4);
+
+			for(int i = 0; i < observationFiles.Count; i++)
+			{
+				using(StreamReader sro = new StreamReader(observationFiles[i]))
+				{
+					using(StreamReader srg = new StreamReader(gazeLogFiles[i]))
+					{
+						trials.Add(new Trial(sro, srg, i));
+					}
+				}
+			}
 		}
 
 		public void DiscardTrialsWithTooFewReverses(int lowestNumberOfReverses)

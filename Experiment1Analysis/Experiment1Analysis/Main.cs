@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Globalization;
+using System.Collections.Generic;
 
 namespace Experiment1Analysis
 {
@@ -33,7 +34,34 @@ namespace Experiment1Analysis
 			Console.WriteLine(tt.Threshold);
 */
 
-			Console.WriteLine((21).ToString("0000"));
+			string[] files = Directory.GetFiles("/Users/Thorbjorn/Dropbox/MED6/Results/Pixelation test - TwentyParticipants/Experiments/E1 Best PEST pixelation/Participants/0001");
+			
+			List<string> observationFiles = new List<string>(4);
+			List<string> gazeLogFiles = new List<string>(4);
+			
+			foreach(string s in files)
+			{
+				if(s.Contains("gazelog"))
+				{
+					gazeLogFiles.Add(s);
+				}
+				else
+				{
+					observationFiles.Add(s);
+				}
+			}
+			
+			observationFiles.Sort();
+			gazeLogFiles.Sort();
+
+			foreach(string s in observationFiles)
+			{
+				Console.WriteLine("Obs: " + s);
+			}
+			foreach(string s in gazeLogFiles)
+			{
+				Console.WriteLine("Gaz: " + s);
+			}
 
 			//Demographics demoTest = new Demographics(new StreamReader("/Users/Thorbjorn/Dropbox/MED6/Results/Pixelation test - TwentyParticipants/Experiments/E1 Best PEST pixelation/Participants/demographic.csv"));
 			//Console.Write(demoTest.GetDemographicFromID(25).GameUse);
