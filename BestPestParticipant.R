@@ -4,6 +4,11 @@
 # TODO: Make data structure for gaze data
 # TODO: Figure out a way to determine whether gaze was ok close to wanted positions
 
+# Per-trial: See max gaze deviation after lo-pass filter (filter out gaze tracker noise).  If above threshold, discard trial.
+# Per-participant: Calculate mean and standard deviation for thresholds
+
+
+
 # PARTICIPANT has members id, T1, T2, T3, T4
 MakeParticipant = function(id, T1, T2, T3, T4)
 {
@@ -22,7 +27,7 @@ GetThresholdsMatrix = function(participant)
   # Assuming threshold value is the last in each trial
   p = participant
   threshold = ConcatenateTrials(tail(p$T1, 1),tail(p$T2, 1),tail(p$T3, 1),tail(p$T4, 1))
-  return(threshold)
+  return(c("id" = p$id, threshold))
 }
 
 PlotStimulusValues = function(participant)
@@ -83,4 +88,16 @@ GetThresholdStats = function(participant)
   stdev = sd(thresholds)
   stats = list("Thresholds" = thresholds, "Mean" = meanVal, "SD"=stdev)
   return(stats)
+}
+
+ExtractIDs = function(...)
+{
+  ps = list(...)
+  output = integer()
+  output[1] = 12
+  for(i in 1:length(ps))
+  {
+    output[i] = ps[i]$id
+  }
+  return(output)
 }
