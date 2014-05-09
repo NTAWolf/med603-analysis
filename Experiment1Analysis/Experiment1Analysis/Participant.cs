@@ -59,6 +59,31 @@ namespace Experiment1Analysis
 			string folderName = ID.ToString("0000"); // 4 digits in the folder name
 			return Path.Combine(basePath, folderName);
 		}
+
+		public float GetMean()
+		{
+			float[] thresholdArr = new float[trials.Count];
+
+			for(int i = 0; i < trials.Count; i++)
+			{
+				thresholdArr[i] = t.Threshold;
+			}
+
+			return Statistics.Mean(thresholdArr)
+		}
+
+		public float GetStandardDeviation()
+		{
+			float[] thresholdArr = new float[trials.Count];
+			
+			for(int i = 0; i < trials.Count; i++)
+			{
+				thresholdArr[i] = t.Threshold;
+			}
+			
+			return Statistics.StandardDeviation(thresholdArr)
+		}
+		
 	}
 }
 
