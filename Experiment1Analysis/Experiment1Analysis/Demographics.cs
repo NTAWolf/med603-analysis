@@ -13,7 +13,7 @@ namespace Experiment1Analysis
 	/// </summary>
 	public class Demographics
 	{
-		List<DemographicData> demoData = new List<DemographicData>();
+		public List<DemographicData> demoData = new List<DemographicData>();
 
 		public Demographics(StreamReader demographicsStream)
 		{

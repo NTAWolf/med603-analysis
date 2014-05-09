@@ -10,13 +10,17 @@
 using System;
 namespace Experiment1Analysis
 {
+	/*
+	Reads from a string
+	points to the folder
+	
+	 */
 	public class Participant
 	{
 		public Trial[] trials;
-		public uint id;
-		public DemographicData demographics;
+		DemographicData demographics;
 
-		public Participant ()
+		public Participant()
 		{
 		}
 	}
