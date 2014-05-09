@@ -17,13 +17,14 @@ namespace Experiment1Analysis
 	public class Trial
 	{
 		public const int MINIMUM_SECONDS_BETWEEN_OBSERVATIONS = 2;
+
 		public Observation[] observations
 		{
 			get;
 			private set;
 		}
 
-		public uint trialNumber
+		public int ID
 		{
 			get;
 			private set;
@@ -37,7 +38,7 @@ namespace Experiment1Analysis
 			}
 		}
 
-		// TODO Unit test this
+		private int _NumberOfReverses = -1;
 		/// <summary>
 		/// Gets the number of reverses in this trial, i.e. the number of times the user changed answer from positive to negative or vice versa.
 		/// </summary>
@@ -46,21 +47,27 @@ namespace Experiment1Analysis
 		{
 			get
 			{
-				int count = 0;
-				for(int i = 1; i < observations.Length; i++)
+				if(_NumberOfReverses < 0)
 				{
-					if(observations[i].response != observations[i - 1].response)
+					_NumberOfReverses = 0;
+					for(int i = 1; i < observations.Length; i++)
 					{
-						count++;
+						if(observations[i].response != observations[i - 1].response)
+						{
+							_NumberOfReverses++;
+						}
 					}
 				}
-
-				return count;
+				return _NumberOfReverses;
 			}
 		}
 
-		public Trial (StreamReader observationLogStream, StreamReader gazeLogStream)
+
+
+		public Trial (StreamReader observationLogStream, StreamReader gazeLogStream, int ID)
 		{
+			this.ID = ID;
+
 			// Skip forward to point where we're past headers
 			string[] observationsStrings = GetLinesStartingWithDigits(observationLogStream);
 			string[] gazeStrings = GetLinesStartingWithDigits(gazeLogStream);			
@@ -76,7 +83,7 @@ namespace Experiment1Analysis
 				if(i > 0)
 				{
 					TimeSpan ts = gazeLogs[i].timestamp - gazeLogs[i - 1].timestamp;
-					if(ts.Seconds >= MINIMUM_SECONDS_BETWEEN_OBSERVATIONS)
+					if(ts.TotalSeconds >= MINIMUM_SECONDS_BETWEEN_OBSERVATIONS)
 					{
 						observationsIndices.Add (i);
 					}
@@ -84,7 +91,6 @@ namespace Experiment1Analysis
 			}
 
 			observationsIndices.Add (gazeStrings.Length);
-
 			observations = new Observation[observationsStrings.Length];
 
 			// Generate Observations from the combined observation and gaze data
@@ -103,6 +109,7 @@ namespace Experiment1Analysis
 			}
 		}
 
+		// TODO doesn't work with negative numbers
 		public static string[] GetLinesStartingWithDigits(StreamReader stream)
 		{
 			List<string> lines = new List<string>(10);

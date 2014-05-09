@@ -14,7 +14,7 @@ namespace Experiment1Analysis
 	{
 		public Trial[] trials;
 		public uint id;
-
+		public DemographicData demographics;
 
 		public Participant ()
 		{

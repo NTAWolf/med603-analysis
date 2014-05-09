@@ -15,9 +15,39 @@ namespace Experiment1Analysis
 {
 	public class Observation
 	{
+		private float[] smoothedGazeDistances = null;
+		
 		public float stimulus;
 		public short response;
 		public GazeLogEntry[] gazeEntries;
+
+		private float  _GazeDistanceMean = -1; 
+		public float GazeDistanceMean
+		{
+			get
+			{
+				if(_GazeDistanceMean < 0)
+				{
+					_GazeDistanceMean = Statistics.Mean(GetGazeDistances());
+				}
+
+				return _GazeDistanceMean;
+			}
+		}
+
+		private float _GazeDistanceStandardDeviation = -1;
+		public float GazeDistanceStandardDeviation
+		{
+			get
+			{
+				if(_GazeDistanceStandardDeviation < 0)
+				{
+					_GazeDistanceStandardDeviation = Statistics.StandardDeviation(GetGazeDistances());
+				}
+				
+				return _GazeDistanceStandardDeviation;
+			}
+		}
 
 		public Observation(string observationEntry, GazeLogEntry[] gazeLogEntries)
 			: this(observationEntry.Split (new char[]{','}), gazeLogEntries)
@@ -38,6 +68,26 @@ namespace Experiment1Analysis
              
              gazeEntries = gazeLogs.ToArray();*/
 			this.gazeEntries = gazeLogEntries;
+		}
+
+		public float[] GetGazeDistances()
+		{
+			float[] deviations = new float[gazeEntries.Length];
+			for(int i = 0; i < gazeEntries.Length; i++)
+			{
+				deviations[i] = gazeEntries[i].distance;
+			}
+			return deviations;
+		}
+
+		public float[] GetSmoothedGazeDistances(int windowSize)
+		{
+			if(smoothedGazeDistances == null)
+			{
+				smoothedGazeDistances = Statistics.SmoothClip(GetGazeDistances(), windowSize);
+			}
+
+			return smoothedGazeDistances;
 		}
 	}
 }

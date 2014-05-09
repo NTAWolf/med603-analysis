@@ -42,6 +42,7 @@
     <Compile Include="Observation.cs" />
     <Compile Include="GazeLogEntry.cs" />
     <Compile Include="Demographics.cs" />
+    <Compile Include="Statistics.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
