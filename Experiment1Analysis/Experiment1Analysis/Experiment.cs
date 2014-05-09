@@ -16,7 +16,7 @@ namespace Experiment1Analysis
 	public class Experiment
 	{
 		Demographics demoGraphic;
-		List<Participant> participants;
+		List<Participant> participants = new List<Participant>();
 
 		public Experiment (string pathToParticipantFolder)
 		{
@@ -28,6 +28,35 @@ namespace Experiment1Analysis
 				//Doesn't work before Participant class is done
 				participants.Add(new Participant(pathToParticipantFolder, d));
 			}
+		}
+
+		//Returns the mean of all trial thresholds
+		public float GetThresholdMeanPerTrial() 
+		{
+			List<float> TrialThresholdList = new List<float>();
+			
+			foreach(Participant p in participants)
+			{
+				foreach(Trial t in p.trials)
+				{
+					TrialThresholdList.Add(t.Threshold);
+				}
+			}
+
+			return Statistics.Mean(TrialThresholdList.ToArray());
+		}
+
+		//Returns the mean of all participant thresholds
+		public float GetThresholdMeanPerParticipant()
+		{
+			List<float> participantThresholdList = new List<float>();
+			
+			foreach(Participant p in participants)
+			{
+					participantThresholdList.Add(p.GetMean());
+			}
+
+			return Statistics.Mean(participantThresholdList.ToArray());
 		}
 	}
 }

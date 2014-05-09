@@ -62,26 +62,26 @@ namespace Experiment1Analysis
 
 		public float GetMean()
 		{
-			float[] thresholdArr = new float[trials.Count];
+			List<float> thresholdList = new List<float>();
 
-			for(int i = 0; i < trials.Count; i++)
+			foreach(Trial t in trials)
 			{
-				thresholdArr[i] = t.Threshold;
+				thresholdList.Add(t.Threshold);
 			}
 
-			return Statistics.Mean(thresholdArr)
+			return Statistics.Mean(thresholdList.ToArray());
 		}
 
 		public float GetStandardDeviation()
 		{
-			float[] thresholdArr = new float[trials.Count];
+			List<float> thresholdList = new List<float>();
 			
-			for(int i = 0; i < trials.Count; i++)
+			foreach(Trial t in trials)
 			{
-				thresholdArr[i] = t.Threshold;
+				thresholdList.Add(t.Threshold);
 			}
 			
-			return Statistics.StandardDeviation(thresholdArr)
+			return Statistics.StandardDeviation(thresholdList.ToArray());
 		}
 		
 	}
