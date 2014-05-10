@@ -43,7 +43,8 @@
     <Compile Include="GazeLogEntry.cs" />
     <Compile Include="Demographics.cs" />
     <Compile Include="Statistics.cs" />
-    <Compile Include="Experiment.cs" />
+    <Compile Include="CSVWriter.cs" />
+    <Compile Include="ExperimentData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

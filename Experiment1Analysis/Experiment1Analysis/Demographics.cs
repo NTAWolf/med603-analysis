@@ -84,6 +84,11 @@ namespace Experiment1Analysis
 			this.Age = Age;
 			this.GameUse = GameUse;
 		}
+
+		public override string ToString ()
+		{
+			return ("DemographicData " + ID + " " + Gender + " " + Age + " " + GameUse);
+		}
 	}
 
 

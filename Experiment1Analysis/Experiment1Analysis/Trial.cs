@@ -16,20 +16,39 @@ namespace Experiment1Analysis
 {
 	public class Trial
 	{
+		/// <summary>
+		/// The minimum number of seconds between observations.
+		/// Used to determine what gaze-logged data belongs to which 
+		/// stimulus and response.
+		/// </summary>
 		public const int MINIMUM_SECONDS_BETWEEN_OBSERVATIONS = 2;
 
+		/// <summary>
+		/// The set of observations that make up this Trial.
+		/// </summary>
+		/// <value>This Trial's observations.</value>
 		public Observation[] observations
 		{
 			get;
 			private set;
 		}
 
+		/// <summary>
+		/// 1-based sequential ID of this trial in relation to the other
+		/// trials done by its Participant
+		/// </summary>
+		/// <value>The ID</value>
 		public int ID
 		{
 			get;
 			private set;
 		}
 
+		/// <summary>
+		/// The threshold as estimated by this trial, using the Best PEST algorithm.
+		/// In other words, the last presented stimulus in this Trial.
+		/// </summary>
+		/// <value>The estimated threshold.</value>
 		public float Threshold
 		{
 			get
@@ -62,8 +81,12 @@ namespace Experiment1Analysis
 			}
 		}
 
-
-
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Experiment1Analysis.Trial"/> class.
+		/// </summary>
+		/// <param name="observationLogStream">Observation log, as a stream.</param>
+		/// <param name="gazeLogStream">Gaze log, as a stream.</param>
+		/// <param name="ID">1-based sequential ID number</param>
 		public Trial (StreamReader observationLogStream, StreamReader gazeLogStream, int ID)
 		{
 			this.ID = ID;
@@ -125,6 +148,11 @@ namespace Experiment1Analysis
 			}
 
 			return lines.ToArray();
+		}
+
+		public override string ToString ()
+		{
+			return string.Format ("Trial {0} with {2} reverses and threshold at {1}", ID, Threshold, NumberOfReverses);
 		}
 	}
 }

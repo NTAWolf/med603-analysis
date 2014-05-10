@@ -9,6 +9,29 @@ namespace Experiment1Analysis
 	{
 		public static void Main (string[] args)
 		{
+			string basePath;
+			if(args.Length > 0)
+			{
+				basePath = args[0];
+				Console.WriteLine("Using provided base path " + basePath);
+			}
+			else
+			{
+				basePath = "/Users/Thorbjorn/Dropbox/MED6/Results/Experiment1Participants";
+				Console.WriteLine("Using default base path " + basePath);
+			}
+
+			Experiment experiment = new Experiment(basePath);
+			//experiment.DiscardTrialsWithTooFewReverses(3);
+
+			foreach(Participant p in experiment.participants)
+			{
+				foreach(Trial t in p.trials)
+				{
+					Console.WriteLine(p + " " + t);
+				}
+			}
+
 /*			string[] gles = {
 				"09-38-12-8530135,1204.288,388.4016,1203.995,437.6996",
 				"09-39-28-0043119,1253.259,505.9728,1208.927,518.5724",
@@ -33,7 +56,7 @@ namespace Experiment1Analysis
 			Console.WriteLine(tt.NumberOfReverses);
 			Console.WriteLine(tt.Threshold);
 */
-
+			/*
 			string[] files = Directory.GetFiles("/Users/Thorbjorn/Dropbox/MED6/Results/Pixelation test - TwentyParticipants/Experiments/E1 Best PEST pixelation/Participants/0001");
 			
 			List<string> observationFiles = new List<string>(4);
@@ -62,7 +85,7 @@ namespace Experiment1Analysis
 			{
 				Console.WriteLine("Gaz: " + s);
 			}
-
+*/
 			//Demographics demoTest = new Demographics(new StreamReader("/Users/Thorbjorn/Dropbox/MED6/Results/Pixelation test - TwentyParticipants/Experiments/E1 Best PEST pixelation/Participants/demographic.csv"));
 			//Console.Write(demoTest.GetDemographicFromID(25).GameUse);
 

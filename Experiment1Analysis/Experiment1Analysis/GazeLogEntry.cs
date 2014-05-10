@@ -10,7 +10,6 @@
 using System;
 namespace Experiment1Analysis
 {
-	// TODO implement datetime parsing
 	public struct GazeLogEntry
 	{
 		public DateTime timestamp;
@@ -18,13 +17,12 @@ namespace Experiment1Analysis
 		public float y;
 		public float ref_x;
 		public float ref_y;
-
 		public float distance;
 
 		public GazeLogEntry(string entry)
 		: this(entry.Split(new char[] { ',' }))
 		{
-
+			// Deliberately empty
 		}
 
 		private GazeLogEntry(string[] contents)
@@ -34,11 +32,7 @@ namespace Experiment1Analysis
 			y = Single.Parse(contents[2]);
 			ref_x = Single.Parse(contents[3]);
 			ref_y = Single.Parse(contents[4]);
-
-			float dx = x - ref_x;
-			float dy = y - ref_y;
-			
-			distance = (float)Math.Sqrt(dx * dx + dy * dy);
+			distance = Statistics.Distance(x, y, ref_x, ref_y);
 		}
 	}
 }

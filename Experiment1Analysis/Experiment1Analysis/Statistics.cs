@@ -102,6 +102,14 @@ namespace Experiment1Analysis
 
 			return maxSoFar;
 		}
+
+		public static float Distance(float x1, float y1, float x2, float y2)
+		{
+			float dx = x1 - x2;
+			float dy = y1 - y2;
+			
+			return (float)Math.Sqrt(dx * dx + dy * dy);
+		}
 	}
 }
 

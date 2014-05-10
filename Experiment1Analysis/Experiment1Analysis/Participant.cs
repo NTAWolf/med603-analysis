@@ -77,7 +77,7 @@ namespace Experiment1Analysis
 				{
 					using(StreamReader srg = new StreamReader(gazeLogFiles[i]))
 					{
-						trials.Add(new Trial(sro, srg, i));
+						trials.Add(new Trial(sro, srg, i + 1));
 					}
 				}
 			}
@@ -97,6 +97,7 @@ namespace Experiment1Analysis
 
 			foreach(Trial t in toBeRemoved)
 			{
+				Console.WriteLine(this.ToString() + " removing " + t);
 				trials.Remove(t);
 			}
 		}
@@ -130,7 +131,11 @@ namespace Experiment1Analysis
 			
 			return Statistics.StandardDeviation(thresholdList.ToArray());
 		}
-		
+
+		public override string ToString ()
+		{
+			return string.Format ("Participant " + demographics.ID);
+		}
 	}
 }
 
