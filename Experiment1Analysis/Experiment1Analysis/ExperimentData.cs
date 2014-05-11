@@ -103,11 +103,9 @@ namespace Experiment1Analysis
 			}
 		}
 
+		// TODO Test or evaluate somehow whether this method does what it should
 		public void GetCountsForResponseAround(float stimulusLevel, out int positiveAbove, out int negativeAbove, out int positiveBelow, out int negativeBelow)
 		{
-			// Count number of positive answers above stimulus level
-			// Count total number of answers above stimulus level
-
 			positiveAbove = 0;
 			negativeAbove = 0;
 			positiveBelow = 0;
@@ -148,9 +146,8 @@ namespace Experiment1Analysis
 					}
 				}
 			}
-
-
-			// Divide, return
+				
+			// TODO Create a method for generating a histogram here? Divide stimuli into bins and give a ratio of positiveresponses/totalresponses 
 		}
 	}
 }

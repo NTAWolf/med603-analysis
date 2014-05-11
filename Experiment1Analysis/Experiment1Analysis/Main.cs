@@ -24,6 +24,17 @@ namespace Experiment1Analysis
 			ExperimentData experiment = new ExperimentData(basePath);
 			//experiment.DiscardTrialsWithTooFewReverses(3);
 
+			int pa, na, pb, nb;
+			for(float f = 0f; f < 140f; f += 0.5f + (f*f*0.01f))
+			{
+				experiment.GetCountsForResponseAround (f, out pa, out na, out pb, out nb);
+				Console.WriteLine (f + ": Probability of positive answer above this value: " 
+					+ (((float)(pa)) / (pa + na)) 
+					+ "\t\tProbability of positive answer below this value:: " 
+					+ (((float)(pb)) / (pb + nb)));
+			}
+
+			/*
 			foreach(Participant p in experiment.participants)
 			{
 				foreach(Trial t in p.trials)
@@ -31,7 +42,7 @@ namespace Experiment1Analysis
 					Console.WriteLine(p + " " + t);
 				}
 			}
-
+*/
 /*			string[] gles = {
 				"09-38-12-8530135,1204.288,388.4016,1203.995,437.6996",
 				"09-39-28-0043119,1253.259,505.9728,1208.927,518.5724",
