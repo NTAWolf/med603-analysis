@@ -17,11 +17,11 @@ namespace Experiment1Analysis
 			}
 			else
 			{
-				basePath = "/Users/Thorbjorn/Dropbox/MED6/Results/Experiment1Participants";
+				basePath = "/Users/NTAWolf/Dropbox/MED6/Results/Experiment1Participants";
 				Console.WriteLine("Using default base path " + basePath);
 			}
 
-			Experiment experiment = new Experiment(basePath);
+			ExperimentData experiment = new ExperimentData(basePath);
 			//experiment.DiscardTrialsWithTooFewReverses(3);
 
 			foreach(Participant p in experiment.participants)

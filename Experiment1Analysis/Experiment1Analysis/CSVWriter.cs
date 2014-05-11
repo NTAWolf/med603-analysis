@@ -21,7 +21,7 @@ namespace Experiment1Analysis
 			string newHeader = InsertSeparator(header, separator);
 			string block = ElementsToBlock(elements, separator);
 
-			Write(path, header, block);
+			Write(path, newHeader, block);
 		}
 
 		public static string ElementsToBlock(string[][] elements, char separator = ',')
@@ -35,9 +35,9 @@ namespace Experiment1Analysis
 
 			for(int i = 0; i < lines.Length - 1; i++)
 			{
-				output += lines[i] + "\r\n";
+				output.Append(lines[i] + "\r\n");
 			}
-			output += lines[lines.Length - 1];
+			output.Append(lines[lines.Length - 1]);
 
 			return output.ToString();
 		}
@@ -59,9 +59,9 @@ namespace Experiment1Analysis
 			StringBuilder output = new StringBuilder();
 			for(int i = 0; i < elements.Length - 1; i++)
 			{
-				output += elements[i] + separator;
+				output.Append(elements[i] + separator);
 			}
-			output += elements[elements.Length - 1];
+			output.Append(elements[elements.Length - 1]);
 
 			return output.ToString();
 		}

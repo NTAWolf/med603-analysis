@@ -102,6 +102,56 @@ namespace Experiment1Analysis
 				p.DiscardTrialsWithTooFewReverses(lowestNumberOfReverses);
 			}
 		}
+
+		public void GetCountsForResponseAround(float stimulusLevel, out int positiveAbove, out int negativeAbove, out int positiveBelow, out int negativeBelow)
+		{
+			// Count number of positive answers above stimulus level
+			// Count total number of answers above stimulus level
+
+			positiveAbove = 0;
+			negativeAbove = 0;
+			positiveBelow = 0;
+			negativeBelow = 0;
+
+			foreach (Participant p in participants) 
+			{
+				foreach (Trial t in p.trials) 
+				{
+					foreach(Observation o in t.observations)
+					{
+						if(o.stimulus >= stimulusLevel)
+						{
+							// Above
+							// Positive
+							if(o.response == 1)
+							{
+								positiveAbove++;
+							}
+							else
+							{
+								negativeAbove++;
+							}
+						}
+						else
+						{
+							// Below
+							// Positive
+							if(o.response == 1)
+							{
+								positiveBelow++;
+							}
+							else
+							{
+								negativeBelow++;
+							}	
+						}
+					}
+				}
+			}
+
+
+			// Divide, return
+		}
 	}
 }
 
