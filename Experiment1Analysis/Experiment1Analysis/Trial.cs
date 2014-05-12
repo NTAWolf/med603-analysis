@@ -102,6 +102,7 @@ namespace Experiment1Analysis
 			// Populate gazeLogs with data from gazeStrings, and find indices where a new observation begins
 			for(int i = 0; i < gazeStrings.Length; i++)
 			{
+				//Console.WriteLine("Adding gazelog for trial " + ID + " gazestring " + i);
 				gazeLogs.Add (new GazeLogEntry(gazeStrings[i]));
 				if(i > 0)
 				{

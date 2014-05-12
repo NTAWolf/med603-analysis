@@ -85,6 +85,7 @@ namespace Experiment1Analysis
 				{
 					using(StreamReader srg = new StreamReader(gazeLogFiles[i]))
 					{
+						//Console.WriteLine("adding trial for " + this.ToString());
 						trials.Add(new Trial(sro, srg, i + 1, clipObservationDurationMillis));
 					}
 				}
