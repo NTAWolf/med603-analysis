@@ -103,6 +103,20 @@ namespace Experiment1Analysis
 			return maxSoFar;
 		}
 
+		public static int Max(int[] values)
+		{
+			int maxSoFar = values[0];
+			foreach(int v in values)
+			{
+				if(maxSoFar < v)
+				{
+					maxSoFar = v;
+				}
+			}
+			
+			return maxSoFar;
+		}
+
 		public static float Distance(float x1, float y1, float x2, float y2)
 		{
 			float dx = x1 - x2;

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Globalization;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Experiment1Analysis
 {
@@ -17,107 +18,172 @@ namespace Experiment1Analysis
 			}
 			else
 			{
-				basePath = "/Users/NTAWolf/Dropbox/MED6/Results/Experiment1Participants";
+				basePath = "/Users/Thorbjorn/Dropbox/MED6/Results/Experiment1Participants";
 				Console.WriteLine("Using default base path " + basePath);
 			}
 
-			ExperimentData experiment = new ExperimentData(basePath);
+			double clipObservationDurationMillis = 2000.0;
+			ExperimentData experiment = new ExperimentData(basePath, clipObservationDurationMillis);
 			//experiment.DiscardTrialsWithTooFewReverses(3);
 
-			int pa, na, pb, nb;
-			for(float f = 0f; f < 140f; f += 0.5f + (f*f*0.01f))
-			{
-				experiment.GetCountsForResponseAround (f, out pa, out na, out pb, out nb);
-				Console.WriteLine (f + ": Probability of positive answer above this value: " 
-					+ (((float)(pa)) / (pa + na)) 
-					+ "\t\tProbability of positive answer below this value:: " 
-					+ (((float)(pb)) / (pb + nb)));
-			}
-
 			/*
+			List<float> observationDuration = new List<float>(10);
+			List<float> observationDurationGrandTotal = new List<float>(25*10);
+			
+			List<float> gazeEntryDuration = new List<float>(4000);
+			List<float> gazeEntryDurationGrandTotal = new List<float>(4000);
+
+			
+
 			foreach(Participant p in experiment.participants)
 			{
 				foreach(Trial t in p.trials)
 				{
-					Console.WriteLine(p + " " + t);
+					int count = 1;
+					for(int k = 0; k < t.observations.Length; k++)
+					{
+						Observation o = t.observations[k];
+						float diffms = 0;
+
+						if(k > 0)
+						{
+							TimeSpan diff = o.gazeEntries[0].timestamp 
+								- t.observations[k - 1].gazeEntries[ t.observations[k - 1].gazeEntries.Length - 1 ].timestamp;
+							 diffms = (float)diff.TotalMilliseconds;
+
+						}
+
+						for(int i = 1; i < o.gazeEntries.Length; i++)
+						{
+							GazeLogEntry old = o.gazeEntries[i - 1];
+							GazeLogEntry present = o.gazeEntries[i];
+
+							TimeSpan diff = present.timestamp - old.timestamp;
+							
+							gazeEntryDuration.Add((float)diff.TotalMilliseconds);
+						}
+						float obsDur = (float)(o.gazeEntries[o.gazeEntries.Length - 1].timestamp - o.gazeEntries[0].timestamp).TotalMilliseconds;
+						Console.WriteLine(p.ID + "." + t.ID + "." + count++ + " obs time: " + obsDur + "\t\tObs gap to last " + diffms);
+						observationDuration.Add (obsDur);
+						//Console.WriteLine(p.ID + "." + t.ID + "." + count++ + " gaze entry count: " + o.gazeEntries.Length);
+					}
 				}
-			}
-*/
-/*			string[] gles = {
-				"09-38-12-8530135,1204.288,388.4016,1203.995,437.6996",
-				"09-39-28-0043119,1253.259,505.9728,1208.927,518.5724",
-				"09-39-28-5213415,1252.661,499.824,1208.927,518.5724"
-			};
-*/
+				Console.WriteLine(p.ID + ". Avg gaze entry duration: " + Statistics.Mean (gazeEntryDuration.ToArray())
+				                  + "\tAvg observation duration: " + Statistics.Mean (observationDuration.ToArray()));		
 
-			/*Trial tt;
-			string obs = "Stimulus, Value\n70,1\n60,-1\n50,1\n40,-1\n30,1\n20,-1\n10,1\n6,-1\n0,1\n2000,-1";
-			string gz = "09-30-12-8530135,1204.288,388.4016,1203.995,437.6996\n09-31-13-6510591,1238.682,392.4838,1203.995,437.6996\n09-32-13-6690602,1238.46,393.2184,1203.995,437.6996\n09-33-18-4303325,1047.287,624.6796,1203.995,437.6996\n09-34-18-4463334,1048.415,632.8615,1203.995,437.6996\n09-35-18-4623343,1055.353,638.443,1203.995,437.6996\n09-36-20-9104743,928.2126,666.749,1203.995,437.6996\n09-37-20-9274753,924.9333,672.6703,1203.995,437.6996\n09-38-22-4939967,912.7782,352.4776,729.4939,193.1669\n09-39-26-4932255,1239.695,489.0759,1208.927,518.5724";
+				observationDurationGrandTotal.AddRange(observationDuration);
+				gazeEntryDurationGrandTotal.AddRange(gazeEntryDuration);
 
-			using(StreamReader observation = new StreamReader(GenerateStreamFromString(obs)))
-			{
-				using(StreamReader gazelog = new StreamReader(GenerateStreamFromString(gz)))
-				{
-					tt = new Trial(observation, gazelog, 1);
-				}
+				observationDuration.Clear();
+				gazeEntryDuration.Clear();
 			}
 
-
-			Console.WriteLine(tt.ID);
-			Console.WriteLine(tt.NumberOfReverses);
-			Console.WriteLine(tt.Threshold);
-*/
-			/*
-			string[] files = Directory.GetFiles("/Users/Thorbjorn/Dropbox/MED6/Results/Pixelation test - TwentyParticipants/Experiments/E1 Best PEST pixelation/Participants/0001");
+			Console.WriteLine();
 			
-			List<string> observationFiles = new List<string>(4);
-			List<string> gazeLogFiles = new List<string>(4);
+			Console.WriteLine("Total avg gaze entry duration: " + Statistics.Mean (gazeEntryDurationGrandTotal.ToArray()));		
+			Console.WriteLine("Total avg observation duration: " + Statistics.Mean (gazeEntryDurationGrandTotal.ToArray()));		
 			
-			foreach(string s in files)
-			{
-				if(s.Contains("gazelog"))
-				{
-					gazeLogFiles.Add(s);
-				}
-				else
-				{
-					observationFiles.Add(s);
-				}
-			}
+			*/
+
+			//WriteTrialsByFirstResponse (basePath, experiment);
+			Console.WriteLine();
+			Console.WriteLine(experiment.QuickStats());
+			Console.WriteLine();
+			Console.WriteLine();
+			Console.WriteLine(experiment.DiscardBadTrials());
+			Console.WriteLine();
+			Console.WriteLine();
+			Console.WriteLine();
 			
-			observationFiles.Sort();
-			gazeLogFiles.Sort();
+			Console.WriteLine(experiment.QuickStats());
+		}
 
-			foreach(string s in observationFiles)
-			{
-				Console.WriteLine("Obs: " + s);
-			}
-			foreach(string s in gazeLogFiles)
-			{
-				Console.WriteLine("Gaz: " + s);
-			}
-*/
-			//Demographics demoTest = new Demographics(new StreamReader("/Users/Thorbjorn/Dropbox/MED6/Results/Pixelation test - TwentyParticipants/Experiments/E1 Best PEST pixelation/Participants/demographic.csv"));
-			//Console.Write(demoTest.GetDemographicFromID(25).GameUse);
+		static void WriteTrialsByFirstResponse (string basePath, ExperimentData experiment)
+		{
+			string header;
+			StringBuilder content = new StringBuilder (14000);
+			string fileName;
 
-			/*using(StreamReader observation = new StreamReader("/Users/Thorbjorn/Dropbox/MED6/Results/E1 Best PEST pixelation/Participants/0002/BestPestTrial at 2014-05-08_14-38-24-7246053.csv"))
-			{
-				using(StreamReader gazelog = new StreamReader("/Users/Thorbjorn/Dropbox/MED6/Results/E1 Best PEST pixelation/Participants/0002/BestPestTrial at 2014-05-08_14-33-40-4443454 gazelog.csv"))
-				{
-					tt = new Trial(observation, gazelog);
+			fileName = "Trials divided by first response - and their means and SDs";
+			header = "";
+
+			int counter = 0;
+			int counter2 = 0;
+			List<Trial> startedPositive = new List<Trial> ();
+			List<int> startedPositiveID = new List<int> ();
+			List<Trial> startedNegative = new List<Trial> ();
+			List<int> startedNegativeID = new List<int> ();
+			foreach (Participant p in experiment.participants) {
+				bool printedP = false;
+				int noOfFuckedTrials = 0;
+				foreach (Trial t in p.trials) {
+					bool printedT = false;
+					Observation o1 = t.observations [0];
+					if (o1.response > 0) 
+					{
+						startedPositive.Add (t);
+						startedPositiveID.Add (p.demographics.ID);
+					}
+					else 
+					{
+						startedNegative.Add (t);
+						startedNegativeID.Add (p.demographics.ID);
+					}
 				}
-			}*/
+			}
+			List<float> snThresholds = new List<float> (startedNegative.Count);
+			List<float> snGazeMeans = new List<float> (startedNegative.Count);
+			foreach (Trial t in startedNegative) {
+				snThresholds.Add (t.Threshold);
+				snGazeMeans.Add (t.observations [0].GazeDistanceMean);
+			}
+			List<float> spThresholds = new List<float> (startedPositive.Count);
+			List<float> spGazeMeans = new List<float> (startedNegative.Count);
+			foreach (Trial t in startedPositive) {
+				spThresholds.Add (t.Threshold);
+				spGazeMeans.Add (t.observations [0].GazeDistanceMean);
+			}
+			float snMean = Statistics.Mean (snThresholds.ToArray ());
+			float spMean = Statistics.Mean (spThresholds.ToArray ());
+			float snSD = Statistics.StandardDeviation (snThresholds.ToArray ());
+			float spSD = Statistics.StandardDeviation (spThresholds.ToArray ());
+			float sngMean = Statistics.Mean (snGazeMeans.ToArray ());
+			float spgMean = Statistics.Mean (spGazeMeans.ToArray ());
+			float sngSD = Statistics.StandardDeviation (spGazeMeans.ToArray ());
+			float spgSD = Statistics.StandardDeviation (snGazeMeans.ToArray ());
 
+			content.AppendLine ("Started negative:");
+			content.AppendLine ("Mean resulting threshold: " + snMean);
+			content.AppendLine ("SD resulting threshold: " + snSD);
+			content.AppendLine ("Mean gaze deviation: " + sngMean);
+			content.AppendLine ("SD gaze deviation: " + sngSD);
 
-			/*float[] valuesToBeSmoothed = {0, 0, 0, 0, 0, 1, 1, 1000, 1, 1, 0, 0, 0, 0, 0};
-			float[] smoothed = Statistics.SmoothClip(valuesToBeSmoothed, 2);
+			for (int i = 0; i < startedNegative.Count; i++) {
+				content.AppendLine ("\tParticipant " + startedNegativeID [i].ToString ("00") + " " + startedNegative [i] + "\tavg gaze dist: " + startedNegative [i].observations [0].GazeDistanceMean);
+			}
 
-			foreach(float v in smoothed)
+			content.AppendLine ();
+			content.AppendLine ();
+			content.AppendLine ("Started positive:");
+			content.AppendLine ("Mean resulting threshold: " + spMean);
+			content.AppendLine ("SD resulting threshold: " + spSD);
+			content.AppendLine ("Mean gaze deviation: " + spgMean);
+			content.AppendLine ("SD gaze deviation: " + spgSD);
+
+			for (int i = 0; i < startedPositive.Count; i++) {
+				content.AppendLine ("\tParticipant " + startedPositiveID [i].ToString ("00") + " " + startedPositive [i] + "\tavg gaze dist: " + startedPositive [i].observations [0].GazeDistanceMean);
+			}
+			CSVWriter.Write (Path.Combine (basePath, Path.Combine ("OUTPUT", fileName + ".txt")), header, content.ToString ());
+		}
+
+		private static bool EqualPosition(GazeLogEntry g1, GazeLogEntry g2, float maxDiff)
+		{
+			if( Math.Abs(g1.x - g2.x) < maxDiff && Math.Abs(g1.y - g2.y) < maxDiff)
 			{
-				Console.WriteLine(v);
-			}*/
+				return true;
+			}
 
-
+			return false;
 		}
 
 		public static Stream GenerateStreamFromString(string s)

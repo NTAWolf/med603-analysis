@@ -87,7 +87,7 @@ namespace Experiment1Analysis
 		/// <param name="observationLogStream">Observation log, as a stream.</param>
 		/// <param name="gazeLogStream">Gaze log, as a stream.</param>
 		/// <param name="ID">1-based sequential ID number</param>
-		public Trial (StreamReader observationLogStream, StreamReader gazeLogStream, int ID)
+		public Trial (StreamReader observationLogStream, StreamReader gazeLogStream, int ID, double clipObservationDurationMillis)
 		{
 			this.ID = ID;
 
@@ -128,7 +128,8 @@ namespace Experiment1Analysis
 
 				observations[i] = new Observation(
 					observationsStrings[i],
-					gazeEntriesForThisObservation);
+					gazeEntriesForThisObservation,
+					clipObservationDurationMillis);
 			}
 		}
 
@@ -154,6 +155,54 @@ namespace Experiment1Analysis
 		{
 			return string.Format ("Trial {0} with {2} reverses and threshold at {1}", ID, Threshold, NumberOfReverses);
 		}
+
+		public float GetMaximumSmoothedGazeDistance(int windowSize)
+		{
+			List<float> maxes = new List<float>(observations.Length);
+			foreach(Observation o in observations)
+			{
+				maxes.Add(o.GetMaximumSmoothedGazeDistance(windowSize));
+			}
+
+			return Statistics.Max(maxes.ToArray());
+		}
+
+		public float GetMeanGazeDistance()
+		{
+			List<float> means = new List<float>(observations.Length);
+			foreach(Observation o in observations)
+			{
+				means.Add(o.GazeDistanceMean);
+			}
+
+			return Statistics.Mean (means.ToArray());
+		}
+
+		public bool GazeOutsideBounds(int maxX, int maxY)
+		{
+			foreach(Observation o in observations)
+			{
+				if(o.GazeOutsideBounds(maxX, maxY))
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		public int GetMaxNumberOfConsecutiveReadingsWithGazeDistanceAbove(float distance)
+		{
+			List<int> maxCounts = new List<int>(observations.Length);
+
+			foreach(Observation o in observations)
+			{
+				maxCounts.Add(o.GetMaxNumberOfConsecutiveReadingsWithGazeDistanceAbove(distance));
+			}
+
+			return Statistics.Max(maxCounts.ToArray());
+		}
+
 	}
 }
 

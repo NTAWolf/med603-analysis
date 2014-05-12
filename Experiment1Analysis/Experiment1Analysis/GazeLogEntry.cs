@@ -34,6 +34,36 @@ namespace Experiment1Analysis
 			ref_y = Single.Parse(contents[4]);
 			distance = Statistics.Distance(x, y, ref_x, ref_y);
 		}
+
+		public override string ToString ()
+		{
+			return string.Format ("GazeLogEntry at {0},{1} should be {2},{3}. Distance {4}", x, y, ref_x, ref_y, distance);
+		}
+
+		public bool IsOutsideBounds(int maxX, int maxY)
+		{
+			if(x < 0 || y < 0)
+			{
+				return true;
+			}
+
+			if(x > maxX || y > maxY)
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		public bool IsWithinDistance(GazeLogEntry other, float distance)
+		{
+			if( Math.Abs(this.distance - other.distance) < distance)
+			{
+				return true;
+			}
+
+			return false;
+		}
 	}
 }
 

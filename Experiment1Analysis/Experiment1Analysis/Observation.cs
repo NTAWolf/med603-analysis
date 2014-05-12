@@ -49,6 +49,13 @@ namespace Experiment1Analysis
 			}
 		}
 
+		public Observation(string observationEntry, GazeLogEntry[] gazeLogEntries, double clipDurationMillis)
+			: this(observationEntry.Split (new char[]{','}), gazeLogEntries)
+		{
+			ClipToDurationFromBeginning(clipDurationMillis);
+		}
+
+
 		public Observation(string observationEntry, GazeLogEntry[] gazeLogEntries)
 			: this(observationEntry.Split (new char[]{','}), gazeLogEntries)
 		{
@@ -94,6 +101,68 @@ namespace Experiment1Analysis
 		{
 			float[] smoothed = GetSmoothedGazeDistances(windowSize);
 			return Statistics.Max(smoothed);
+		}
+
+		public override string ToString ()
+		{
+			return string.Format ("[Observation: GazeDistanceMean={0}, GazeDistanceStandardDeviation={1}]", GazeDistanceMean, GazeDistanceStandardDeviation);
+		}
+
+		public bool GazeOutsideBounds(int maxX, int maxY)
+		{
+			foreach(GazeLogEntry g in gazeEntries)
+			{
+				if(g.IsOutsideBounds(maxX, maxY))
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		public int GetMaxNumberOfConsecutiveReadingsWithGazeDistanceAbove(float distance)
+		{
+			List<int> consecutive = new List<int>(gazeEntries.Length);
+
+			consecutive.Add (0);
+
+			for(int i = 0; i < gazeEntries.Length; i++)
+			{
+				GazeLogEntry g = gazeEntries[i];
+
+				if(g.distance > distance)
+				{
+					consecutive[consecutive.Count - 1]++; // Last element++
+				}
+				else
+				{
+					consecutive.Add (0); // Reset counter in a new int
+				}
+			}
+
+			return Statistics.Max (consecutive.ToArray());
+		}
+
+		public void ClipToDurationFromBeginning(double durationMillis)
+		{
+			DateTime start = gazeEntries[0].timestamp;
+
+			int lastIndexWithinDuration = 1;
+			for( ; lastIndexWithinDuration < gazeEntries.Length; lastIndexWithinDuration++)
+			{
+				DateTime current = gazeEntries[lastIndexWithinDuration].timestamp;
+
+				if(durationMillis < (current - start).TotalMilliseconds)
+				{
+					break;
+				}
+			}
+
+			GazeLogEntry[] clipped = new GazeLogEntry[lastIndexWithinDuration + 1];
+			Array.Copy(gazeEntries, clipped, lastIndexWithinDuration + 1);
+
+			gazeEntries = clipped;
 		}
 	}
 }

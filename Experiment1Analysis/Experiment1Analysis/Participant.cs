@@ -24,8 +24,16 @@ namespace Experiment1Analysis
 		public List<Trial> trials;
 		public DemographicData demographics;
 
+		public int ID
+		{
+			get
+			{
+				return demographics.ID;
+			}
+		}
+
 		// TODO Test if this constructor works properly with real data. Test Trial contents, and ensure the connection between demographics and trial data is correct.
-		public Participant (string basePath, DemographicData demographics)
+		public Participant (string basePath, DemographicData demographics, double clipObservationDurationMillis)
 		{
 			this.demographics = demographics;
 
@@ -77,7 +85,7 @@ namespace Experiment1Analysis
 				{
 					using(StreamReader srg = new StreamReader(gazeLogFiles[i]))
 					{
-						trials.Add(new Trial(sro, srg, i + 1));
+						trials.Add(new Trial(sro, srg, i + 1, clipObservationDurationMillis));
 					}
 				}
 			}
@@ -102,12 +110,35 @@ namespace Experiment1Analysis
 			}
 		}
 
+		public void DiscardTrialsWithTooLargeGazeDistanceMean(float maximumGazeDistanceMean)
+		{
+			List<Trial> toBeRemoved = new List<Trial>();
+			
+			foreach(Trial t in trials)
+			{
+				if(t.GetMeanGazeDistance() > maximumGazeDistanceMean)
+				{
+					toBeRemoved.Add (t);
+				}
+			}
+			
+			foreach(Trial t in toBeRemoved)
+			{
+				Console.WriteLine(this.ToString() + " removing " + t);
+				trials.Remove(t);
+			}
+		}
+
 		public static string GetParticipantSpecificPath(string basePath, int ID)
 		{
 			string folderName = ID.ToString("0000"); // 4 digits in the folder name
 			return Path.Combine(basePath, folderName);
 		}
 
+		/// <summary>
+		/// Returns the mean of the participant's estimated threshold values
+		/// </summary>
+		/// <returns>The mean.</returns>
 		public float GetMean()
 		{
 			List<float> thresholdList = new List<float>();
@@ -118,6 +149,11 @@ namespace Experiment1Analysis
 			}
 
 			return Statistics.Mean(thresholdList.ToArray());
+		}
+
+		public float Threshold()
+		{
+			return GetMean();
 		}
 
 		public float GetStandardDeviation()
@@ -135,6 +171,17 @@ namespace Experiment1Analysis
 		public override string ToString ()
 		{
 			return string.Format ("Participant " + demographics.ID);
+		}
+
+		public List<Observation> ConcatenateObservations()
+		{
+			List<Observation> output = new List<Observation>(4*10);
+			foreach(Trial t in trials)
+			{
+				output.AddRange(t.observations);
+			}
+
+			return output;
 		}
 	}
 }
