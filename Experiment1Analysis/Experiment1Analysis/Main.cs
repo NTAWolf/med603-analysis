@@ -18,7 +18,7 @@ namespace Experiment1Analysis
 			}
 			else
 			{
-				basePath = "/Users/Thorbjorn/Dropbox/MED6/Results/Experiment1Participants";
+				basePath = "/Users/WorkMachine/Dropbox/MED6 - Dropbox/MED6/Results/Experiment1Participants";
 				Console.WriteLine("Using default base path " + basePath);
 			}
 
@@ -84,6 +84,9 @@ namespace Experiment1Analysis
 			Console.WriteLine("Total avg observation duration: " + Statistics.Mean (gazeEntryDurationGrandTotal.ToArray()));		
 			
 			*/
+
+			float[] arr = new float[]{0,1,2,3,4,5,6,7,8,9};
+			Console.WriteLine(Statistics.StandardDeviation(arr));
 
 			//WriteTrialsByFirstResponse (basePath, experiment);
 			Console.WriteLine();

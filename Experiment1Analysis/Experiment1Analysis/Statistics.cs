@@ -86,7 +86,7 @@ namespace Experiment1Analysis
 				sumOfSquaredDifferences += diff * diff;
 			}
 
-			return (float)sumOfSquaredDifferences;
+			return (float)sumOfSquaredDifferences/(values.Length-1);
 		}
 
 		public static float Max(float[] values)
