@@ -29,11 +29,11 @@ namespace Experiment1Analysis
 			double clipObservationDurationMillis = 2000.0;
 			ExperimentData experiment = new ExperimentData(basePath, clipObservationDurationMillis);
 
-			
-
 			experiment.PrintParticipantStandardDeviations();
 			Console.WriteLine();
+
 			Console.WriteLine(experiment.DiscardBadTrials());
+
 			Console.WriteLine();
 			experiment.PrintParticipantStandardDeviations();
 			Console.WriteLine();
