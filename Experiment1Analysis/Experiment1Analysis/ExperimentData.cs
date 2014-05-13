@@ -212,7 +212,7 @@ namespace Experiment1Analysis
 			StringBuilder output = new StringBuilder(100);
 			
 			float maximumParticipantThresholdSD = 100;
-			float maximumGazeDeviationDistance = 300;
+			float maximumGazeDeviationDistance = 200;
 			int maximumGazeDeviationExcessCount = 20;
 			int minimumNumberOfReverses = 2;
 			
