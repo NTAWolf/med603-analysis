@@ -216,7 +216,7 @@ namespace Experiment1Analysis
 			int maximumGazeDeviationExcessCount = 20;
 			int minimumNumberOfReverses = 2;
 
-			Console.WriteLine("Discarding bad trials with the following settings:"
+			Console.WriteLine("Discarding trials with the following settings:"
 			                 // + "\n\tMaximum participant threshold standard deviation: " + maximumParticipantThresholdSD
 			                  + "\n\tMaximum gaze deviation distance: " + maximumGazeDeviationDistance
 			                  + "\n\tMaximum gaze deviation excess count: " + maximumGazeDeviationExcessCount

@@ -71,7 +71,7 @@ namespace Experiment1Analysis
 					_NumberOfReverses = 0;
 					for(int i = 1; i < observations.Length; i++)
 					{
-						if(observations[i].response != observations[i - 1].response)
+						if(observations[i].response != observations[i - 1].response && observations[i].response != 0)
 						{
 							_NumberOfReverses++;
 						}
@@ -102,7 +102,6 @@ namespace Experiment1Analysis
 			// Populate gazeLogs with data from gazeStrings, and find indices where a new observation begins
 			for(int i = 0; i < gazeStrings.Length; i++)
 			{
-				//Console.WriteLine("Adding gazelog for trial " + ID + " gazestring " + i);
 				gazeLogs.Add (new GazeLogEntry(gazeStrings[i]));
 				if(i > 0)
 				{
@@ -118,7 +117,8 @@ namespace Experiment1Analysis
 			observations = new Observation[observationsStrings.Length];
 
 			// Generate Observations from the combined observation and gaze data
-			for(int i = 0; i < observationsStrings.Length; i++)
+			// but disregard the last observation, as it is added by us
+			for(int i = 0; i < observationsStrings.Length - 1; i++)
 			{
 				int fromIndex = observationsIndices[i];
 				int toIndex = observationsIndices[i + 1];
@@ -132,6 +132,11 @@ namespace Experiment1Analysis
 					gazeEntriesForThisObservation,
 					clipObservationDurationMillis);
 			}
+
+			observations[observations.Length - 1] = new Observation(
+				observationsStrings[observations.Length - 1],
+				new GazeLogEntry[]{},
+				0);
 		}
 
 		// TODO doesn't work with negative numbers
