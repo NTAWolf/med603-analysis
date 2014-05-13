@@ -199,7 +199,7 @@ namespace Experiment1Analysis
 
 		/// <summary>
 		/// Discards participants who 
-		/// are deemed uselss
+		/// are deemed useless
 		/// whose standard deviation is above a threshold
 		/// Discards trials where
 		/// user has looked too much too far away from the marker
@@ -211,15 +211,19 @@ namespace Experiment1Analysis
 		{
 			StringBuilder output = new StringBuilder(100);
 			
-			float maximumParticipantThresholdSD = 100;
+			float maximumParticipantThresholdSD = 30;
 			float maximumGazeDeviationDistance = 200;
 			int maximumGazeDeviationExcessCount = 20;
 			int minimumNumberOfReverses = 2;
+
+			Console.WriteLine("Discarding bad trials with the following settings:"
+			                  + "\n\tMaximum participant threshold standard deviation: " + maximumParticipantThresholdSD
+			                  + "\n\tMaximum gaze deviation distance: " + maximumGazeDeviationDistance
+			                  + "\n\tMaximum gaze deviation excess count: " + maximumGazeDeviationExcessCount
+			                  + "\n\tMinimum number of reverses: " + minimumNumberOfReverses);
 			
 			/*
-			- Discard users where
-				- User is deemed to have had too bad vision (look in notes)
-				- Standard deviation among user's trial's estimated thresholds is > some threshold
+			 * Discard users where user is deemed to have had too bad vision (look in notes) 
 			*/
 			int[] badParticipants = { 1 }; // Participant 1 had bad eyesight
 			List<Participant> participantsToDrop = new List<Participant>(1);
@@ -241,7 +245,10 @@ namespace Experiment1Analysis
 				participants.Remove(p);
 			}
 			participantsToDrop.Clear();
-			
+
+			/*
+			 * Discard users where standard deviation among user's trial's estimated thresholds is > some threshold
+			 */
 			foreach(Participant p in participants)
 			{
 				if(p.GetStandardDeviation() > maximumParticipantThresholdSD)
@@ -260,17 +267,15 @@ namespace Experiment1Analysis
 			}
 			participantsToDrop.Clear();
 			
-			
-			// Discard trials by different parameters:
-			/*- Discard trials where
-				- User is deemed to have looked too much away from marker:
-					- max distance > 200 for 10 consecutive readings
-						- Number of reverses is < 2
-			*/
+
+
 			List<Trial> trialsToDrop = new List<Trial>(40);
-			
+
 			foreach(Participant p in participants)
 			{
+				/*
+				 * Discard trials with too few reverses
+				 */
 				foreach(Trial t in p.trials)
 				{
 					if(t.NumberOfReverses < minimumNumberOfReverses)
@@ -286,7 +291,10 @@ namespace Experiment1Analysis
 					p.trials.Remove(t);
 				}
 				trialsToDrop.Clear();
-				
+
+				/*
+				 * Discard trials where user gaze deviated too much for too long from the marker
+				 */
 				foreach(Trial t in p.trials)
 				{
 					int max = t.GetMaxNumberOfConsecutiveReadingsWithGazeDistanceAbove(maximumGazeDeviationDistance);
@@ -316,7 +324,7 @@ namespace Experiment1Analysis
 				}
 			}
 			
-			output.AppendLine("Dropping " + participantsToDrop.Count +  " participants for being out of trials:");
+			output.AppendLine("Dropping " + participantsToDrop.Count +  " participants for having 0 trials:");
 			
 			foreach(Participant p in participantsToDrop)
 			{
@@ -326,6 +334,80 @@ namespace Experiment1Analysis
 			participantsToDrop.Clear();
 			
 			return output.ToString();
+		}
+
+		public float[] GetParticipantStandardDeviations()
+		{
+			float[] output = new float[participants.Count];
+
+			for(int i = 0; i < participants.Count; i++)
+			{
+				output[i] = participants[i].GetStandardDeviation();
+			}
+
+			return output;
+		}
+
+		public void PrintParticipantStandardDeviations()
+		{
+			float[] sds = GetParticipantStandardDeviations();
+			
+			for(int i = 0; i < sds.Length; i++)
+			{
+				Console.WriteLine("Participant " + participants[i].ID.ToString("00") + " has sd " + sds[i]);
+			}
+		}
+
+		public float[] GetParticipantThresholdMean()
+		{
+			float[] output = new float[participants.Count];
+
+			for(int i = 0; i < participants.Count; i++)
+			{
+				output[i] = participants[i].GetMean();
+			}
+			
+			return output;
+		}
+
+		public float[] GetTrialThresholds()
+		{
+			List<float> output = new List<float>(participants.Count * 4);
+
+			foreach(Participant p in participants)
+			{
+				foreach(Trial t in p.trials)
+				{
+					output.Add(t.Threshold);
+				}
+			}
+
+			return output.ToArray();
+		}
+
+		public void PresentParticipant(int ID)
+		{
+			Participant p = null;
+			foreach(Participant o in participants)
+			{
+				if(o.ID == ID)
+				{
+					p = o;
+					break;
+				}
+			}
+
+			if(p == null)
+			{
+				return;
+			}
+
+			Console.WriteLine(p.demographics);
+			Console.WriteLine(p.trials.Count + " trials, with mean " + p.GetMean() + " and sd " + p.GetStandardDeviation());
+			foreach(Trial t in p.trials)
+			{
+				Console.WriteLine(t);
+			}
 		}
 	}
 }

@@ -71,6 +71,18 @@ namespace Experiment1Analysis
 			Write(path, header + "\r\n" + contents);
 		}
 
+		public static void Write(string path, string header, float[] contents)
+		{
+			StringBuilder scontents = new StringBuilder(contents.Length * 3);
+
+			foreach(float f in contents)
+			{
+				scontents.AppendLine(f.ToString());
+			}
+
+			Write(path, header, scontents.ToString());
+		}
+
 		public static void Write(string path, string contents)
 		{
 			System.IO.File.WriteAllText(path, contents);

@@ -11,6 +11,7 @@ namespace Experiment1Analysis
 		public static void Main (string[] args)
 		{
 			string basePath;
+			string outputDirectory;
 			if(args.Length > 0)
 			{
 				basePath = args[0];
@@ -18,85 +19,31 @@ namespace Experiment1Analysis
 			}
 			else
 			{
-				basePath = "/Users/WorkMachine/Dropbox/MED6 - Dropbox/MED6/Results/Experiment1Participants";
+				basePath = "/Users/Thorbjorn/Dropbox/MED6/Results/Experiment1Participants";
+				//basePath = "/Users/WorkMachine/Dropbox/MED6 - Dropbox/MED6/Results/Experiment1Participants";
 				Console.WriteLine("Using default base path " + basePath);
 			}
 
+			outputDirectory = Path.Combine(basePath, "OUTPUT");
+
 			double clipObservationDurationMillis = 2000.0;
 			ExperimentData experiment = new ExperimentData(basePath, clipObservationDurationMillis);
-			//experiment.DiscardTrialsWithTooFewReverses(3);
-
-			/*
-			List<float> observationDuration = new List<float>(10);
-			List<float> observationDurationGrandTotal = new List<float>(25*10);
-			
-			List<float> gazeEntryDuration = new List<float>(4000);
-			List<float> gazeEntryDurationGrandTotal = new List<float>(4000);
 
 			
 
-			foreach(Participant p in experiment.participants)
-			{
-				foreach(Trial t in p.trials)
-				{
-					int count = 1;
-					for(int k = 0; k < t.observations.Length; k++)
-					{
-						Observation o = t.observations[k];
-						float diffms = 0;
-
-						if(k > 0)
-						{
-							TimeSpan diff = o.gazeEntries[0].timestamp 
-								- t.observations[k - 1].gazeEntries[ t.observations[k - 1].gazeEntries.Length - 1 ].timestamp;
-							 diffms = (float)diff.TotalMilliseconds;
-
-						}
-
-						for(int i = 1; i < o.gazeEntries.Length; i++)
-						{
-							GazeLogEntry old = o.gazeEntries[i - 1];
-							GazeLogEntry present = o.gazeEntries[i];
-
-							TimeSpan diff = present.timestamp - old.timestamp;
-							
-							gazeEntryDuration.Add((float)diff.TotalMilliseconds);
-						}
-						float obsDur = (float)(o.gazeEntries[o.gazeEntries.Length - 1].timestamp - o.gazeEntries[0].timestamp).TotalMilliseconds;
-						Console.WriteLine(p.ID + "." + t.ID + "." + count++ + " obs time: " + obsDur + "\t\tObs gap to last " + diffms);
-						observationDuration.Add (obsDur);
-						//Console.WriteLine(p.ID + "." + t.ID + "." + count++ + " gaze entry count: " + o.gazeEntries.Length);
-					}
-				}
-				Console.WriteLine(p.ID + ". Avg gaze entry duration: " + Statistics.Mean (gazeEntryDuration.ToArray())
-				                  + "\tAvg observation duration: " + Statistics.Mean (observationDuration.ToArray()));		
-
-				observationDurationGrandTotal.AddRange(observationDuration);
-				gazeEntryDurationGrandTotal.AddRange(gazeEntryDuration);
-
-				observationDuration.Clear();
-				gazeEntryDuration.Clear();
-			}
-
-			Console.WriteLine();
-			
-			Console.WriteLine("Total avg gaze entry duration: " + Statistics.Mean (gazeEntryDurationGrandTotal.ToArray()));		
-			Console.WriteLine("Total avg observation duration: " + Statistics.Mean (gazeEntryDurationGrandTotal.ToArray()));		
-			
-			*/
-
-			float[] arr = new float[]{0,1,2,3,4,5,6,7,8,9};
-			Console.WriteLine(Statistics.StandardDeviation(arr));
-
-			//WriteTrialsByFirstResponse (basePath, experiment);
-			Console.WriteLine();
-			Console.WriteLine(experiment.QuickStats());
-			Console.WriteLine();
+			experiment.PrintParticipantStandardDeviations();
 			Console.WriteLine();
 			Console.WriteLine(experiment.DiscardBadTrials());
 			Console.WriteLine();
+			experiment.PrintParticipantStandardDeviations();
 			Console.WriteLine();
+			experiment.PresentParticipant(7);
 			Console.WriteLine();
+			experiment.PresentParticipant(15);
+			Console.WriteLine();
+			experiment.PresentParticipant(29);
+			Console.WriteLine();
+			experiment.PresentParticipant(31);		
 			
 			Console.WriteLine(experiment.QuickStats());
 		}
