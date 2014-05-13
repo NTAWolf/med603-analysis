@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace Experiment1Analysis
 {
 	class MainClass
@@ -63,10 +64,11 @@ namespace Experiment1Analysis
 */			
 			Console.WriteLine(experiment.QuickStats());
 
-			GetLogisticRegressionCSV(basePath,experiment);
+			Console.WriteLine(Statistics.GetThresholdValueFromSigmoid(0.5f));
+			//WriteLogisticRegressionDataToCSV(basePath,experiment);
 		}
 
-		static void GetLogisticRegressionCSV(string path, ExperimentData experiment)
+		static void WriteLogisticRegressionDataToCSV(string path, ExperimentData experiment)
 		{
 			List<float> respons = new List<float>();
 			List<float> stimuli = new List<float>();
@@ -87,7 +89,7 @@ namespace Experiment1Analysis
 				}
 			}
 			
-			CSVWriter.Write(Path.Combine(path,"output/logRegress.csv"),"respons",respons.ToArray(),"stimuli",stimuli.ToArray());
+			CSVWriter.Write(Path.Combine(path,"output/logistic_regression_data"),"respons",respons.ToArray(),"stimuli",stimuli.ToArray());
 		}
 	}
 }

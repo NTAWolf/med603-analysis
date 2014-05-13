@@ -124,6 +124,12 @@ namespace Experiment1Analysis
 			
 			return (float)Math.Sqrt(dx * dx + dy * dy);
 		}
+
+		public static double GetThresholdValueFromSigmoid(double probability)
+		{
+			Console.WriteLine("Using 620 observations with estimated values: -0.850180 & 0.030057, remember to update if observations are altered!");
+			return (Math.Log((1.0f/probability)-1.0f)-0.850180f)/-0.030057f;
+		}
 	}
 }
 
