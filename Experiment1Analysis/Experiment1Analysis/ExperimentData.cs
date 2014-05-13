@@ -210,9 +210,10 @@ namespace Experiment1Analysis
 		public string DiscardBadTrials()
 		{
 			StringBuilder output = new StringBuilder(100);
-			
+
 			float maximumParticipantThresholdSD = 20;
 			float maximumGazeDeviationDistance = 300;
+
 			int maximumGazeDeviationExcessCount = 20;
 			int minimumNumberOfReverses = 2;
 			
