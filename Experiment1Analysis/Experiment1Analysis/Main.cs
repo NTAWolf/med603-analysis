@@ -22,6 +22,8 @@ namespace Experiment1Analysis
 				Console.WriteLine("Using default base path " + basePath);
 			}
 
+			CSVWriter.Write(Path.Combine(basePath,"test.csv"),"headerOne",new float[5]{0,1,2,3,4},"headerTwo",new float[5]{5,6,7,8,9});
+
 			double clipObservationDurationMillis = 2000.0;
 			ExperimentData experiment = new ExperimentData(basePath, clipObservationDurationMillis);
 			//experiment.DiscardTrialsWithTooFewReverses(3);
@@ -88,6 +90,11 @@ namespace Experiment1Analysis
 			float[] arr = new float[]{0,1,2,3,4,5,6,7,8,9};
 			Console.WriteLine(Statistics.StandardDeviation(arr));
 
+
+			foreach(Observation o in experiment.participants[0].trials[0].observations)
+			{
+				Console.WriteLine(o.stimulus);
+			}
 			//WriteTrialsByFirstResponse (basePath, experiment);
 			Console.WriteLine();
 			Console.WriteLine(experiment.QuickStats());

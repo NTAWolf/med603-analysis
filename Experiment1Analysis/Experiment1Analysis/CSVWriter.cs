@@ -75,6 +75,27 @@ namespace Experiment1Analysis
 		{
 			System.IO.File.WriteAllText(path, contents);
 		}
+
+		public static void Write(string path, string header1, float[] data1, string header2, float[] data2, char separator=',')
+		{
+			StringBuilder output = new StringBuilder();
+
+			output.AppendLine(header1 + separator + header2);
+
+			if(data1.Length != data2.Length)
+			{
+				throw new InvalidOperationException("The data you are trying to write do not have the same length");
+			}
+			else
+			{
+				for(int i = 0; i < data1.Length; i++)
+				{
+					output.AppendLine(data1[i].ToString() + separator + data2[i].ToString());
+				}	
+				System.IO.File.WriteAllText(path,output.ToString());
+			}
+
+		}
 	}
 }
 
