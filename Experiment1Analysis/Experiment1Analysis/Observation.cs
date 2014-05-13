@@ -67,13 +67,6 @@ namespace Experiment1Analysis
 			this.stimulus = Single.Parse(observationEntry[0]);
 			this.response = Int16.Parse(observationEntry[1]);
 
-			/*List<GazeLogEntry> gazeLogs = new List<GazeLogEntry>(2500);
-			foreach(string s in gazeLogEntries)
-			{
-				gazeLogs.Add(new GazeLogEntry(s));
-             }
-             
-             gazeEntries = gazeLogs.ToArray();*/
 			this.gazeEntries = gazeLogEntries;
 		}
 
@@ -146,6 +139,11 @@ namespace Experiment1Analysis
 
 		public void ClipToDurationFromBeginning(double durationMillis)
 		{
+			if(gazeEntries.Length < 1)
+			{
+				return;
+			}
+
 			DateTime start = gazeEntries[0].timestamp;
 
 			int lastIndexWithinDuration = 1;

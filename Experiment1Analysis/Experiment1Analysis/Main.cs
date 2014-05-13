@@ -20,7 +20,7 @@ namespace Experiment1Analysis
 			}
 			else
 			{
-				basePath = "/Users/WorkMachine/Dropbox/MED6 - Dropbox/MED6/Results/Experiment1Participants";
+				basePath = "/Users/Thorbjorn/Downloads/testdata";
 				//basePath = "/Users/WorkMachine/Dropbox/MED6 - Dropbox/MED6/Results/Experiment1Participants";
 				Console.WriteLine("Using default base path " + basePath);
 			}
@@ -29,43 +29,20 @@ namespace Experiment1Analysis
 
 			double clipObservationDurationMillis = 2000.0;
 			ExperimentData experiment = new ExperimentData(basePath, clipObservationDurationMillis);
-			
-			/*
-			CSVWriter.Write(Path.Combine(outputDirectory, "26-1"), 
-			                "GazeDistance", experiment.GetParticipant(26).GetTrial(1).ConcatenateGazeDistances().ToArray());
-			CSVWriter.Write(Path.Combine(outputDirectory, "26-2"), 
-			                "GazeDistance", experiment.GetParticipant(26).GetTrial(2).ConcatenateGazeDistances().ToArray());
-			CSVWriter.Write(Path.Combine(outputDirectory, "26-3"), 
-			                "GazeDistance", experiment.GetParticipant(26).GetTrial(3).ConcatenateGazeDistances().ToArray());
-			CSVWriter.Write(Path.Combine(outputDirectory, "26-4"), 
-			                "GazeDistance", experiment.GetParticipant(26).GetTrial(4).ConcatenateGazeDistances().ToArray());
-*/
-			//experiment.PrintParticipantStandardDeviations();
+
 			Console.WriteLine();
-
 			Console.WriteLine(experiment.QuickStats());
-			
-			float[] trialThresholds;
-			int[] participantID, trialID;
-			/*experiment.GetTrialThresholds(out trialThresholds, out participantID, out trialID);
-			CSVWriter.Write(Path.Combine(outputDirectory, "TrialThresholdsNoisy"), 
-			                "Thresholds", trialThresholds, 
-			                "Participant", participantID, 
-			                "Trial", trialID);
-*/
-			//CSVWriter.Write(Path.Combine(outputDirectory, "TrialThresholdsNoisy"), "Threshold", experiment.GetTrialThresholds()) ;
+			Console.WriteLine();
 			Console.WriteLine(experiment.DiscardBadTrials());
-
-/*			experiment.GetTrialThresholds(out trialThresholds, out participantID, out trialID);
-			CSVWriter.Write(Path.Combine(outputDirectory, "TrialThresholdsDenoised"), 
-			                "Thresholds", trialThresholds, 
-			                "Participant", participantID, 
-			                "Trial", trialID);
-*/			
+			Console.WriteLine();
 			Console.WriteLine(experiment.QuickStats());
 
+<<<<<<< HEAD
 			Console.WriteLine(Statistics.GetThresholdValueFromSigmoid(0.5f));
 			//WriteLogisticRegressionDataToCSV(basePath,experiment);
+=======
+			//GetLogisticRegressionCSV(basePath,experiment);
+>>>>>>> 84c18327abca38b6bc529b1d884b5043864bff84
 		}
 
 		static void WriteLogisticRegressionDataToCSV(string path, ExperimentData experiment)

@@ -83,6 +83,11 @@ namespace Experiment1Analysis
 			Write(path, header, scontents.ToString());
 		}
 
+		/// <summary>
+		/// Write the contents to <path>.csv
+		/// </summary>
+		/// <param name="path">The file (without .csv) to write to. If it doesn't exist, one will be created.</param>
+		/// <param name="contents">Contents of the file</param>
 		public static void Write(string path, string contents)
 		{
 			Console.WriteLine("Writing data to " + path + ".csv");
