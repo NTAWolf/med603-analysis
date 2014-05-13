@@ -85,7 +85,8 @@ namespace Experiment1Analysis
 
 		public static void Write(string path, string contents)
 		{
-			System.IO.File.WriteAllText(path, contents);
+			Console.WriteLine("Writing data to " + path + ".csv");
+			System.IO.File.WriteAllText(path + ".csv", contents);
 		}
 
 		public static void Write(string path, string header1, float[] data1, string header2, float[] data2, char separator=',')
@@ -98,15 +99,39 @@ namespace Experiment1Analysis
 			{
 				throw new InvalidOperationException("The data you are trying to write do not have the same length");
 			}
-			else
+
+			for(int i = 0; i < data1.Length; i++)
 			{
-				for(int i = 0; i < data1.Length; i++)
-				{
-					output.AppendLine(data1[i].ToString() + separator + data2[i].ToString());
-				}	
-				System.IO.File.WriteAllText(path,output.ToString());
+				output.AppendLine(data1[i].ToString() + separator + data2[i].ToString());
+			}	
+			Write(path,output.ToString());
+		}
+
+		public static void Write(string path, 
+		                         string header1, float[] data1, 
+		                         string header2, int[] data2, 
+		                         string header3, int[] data3, 
+		                         char separator=',')
+		{
+			StringBuilder output = new StringBuilder();
+			
+			output.AppendLine(header1 + separator + header2 + separator + header3);
+			
+			if(data1.Length != data2.Length)
+			{
+				throw new InvalidOperationException("Cannot write to disk; " + header1 + " and " + header2 + " do not have the same length");
+			}
+			if(data1.Length != data3.Length)
+			{
+				throw new InvalidOperationException("Cannot write to disk; " + header1 + " and " + header3 + " do not have the same length");
 			}
 
+			for(int i = 0; i < data1.Length; i++)
+			{
+				output.AppendLine(data1[i].ToString() + separator + data2[i].ToString() + separator + data3[i].ToString());
+			}	
+
+			Write(path,output.ToString());
 		}
 	}
 }

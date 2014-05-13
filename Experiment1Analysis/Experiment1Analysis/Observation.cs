@@ -164,6 +164,18 @@ namespace Experiment1Analysis
 
 			gazeEntries = clipped;
 		}
+
+		public List<float> ConcatenateGazeDistances()
+		{
+			List<float> gazeDistances = new List<float>(gazeEntries.Length);
+
+			foreach(GazeLogEntry g in gazeEntries)
+			{
+				gazeDistances.Add(g.distance);
+			}
+
+			return gazeDistances;
+		}
 	}
 }
 

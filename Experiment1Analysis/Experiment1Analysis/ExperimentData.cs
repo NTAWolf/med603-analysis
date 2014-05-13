@@ -211,13 +211,13 @@ namespace Experiment1Analysis
 		{
 			StringBuilder output = new StringBuilder(100);
 			
-			float maximumParticipantThresholdSD = 30;
+			//float maximumParticipantThresholdSD = 30;
 			float maximumGazeDeviationDistance = 200;
 			int maximumGazeDeviationExcessCount = 20;
 			int minimumNumberOfReverses = 2;
 
 			Console.WriteLine("Discarding bad trials with the following settings:"
-			                  + "\n\tMaximum participant threshold standard deviation: " + maximumParticipantThresholdSD
+			                 // + "\n\tMaximum participant threshold standard deviation: " + maximumParticipantThresholdSD
 			                  + "\n\tMaximum gaze deviation distance: " + maximumGazeDeviationDistance
 			                  + "\n\tMaximum gaze deviation excess count: " + maximumGazeDeviationExcessCount
 			                  + "\n\tMinimum number of reverses: " + minimumNumberOfReverses);
@@ -248,8 +248,9 @@ namespace Experiment1Analysis
 
 			/*
 			 * Discard users where standard deviation among user's trial's estimated thresholds is > some threshold
+			 * DISREGARD THIS, WE'RE NOT DOING IT. This will require so good an explanation that we'd rather not do it.
 			 */
-			foreach(Participant p in participants)
+			/*foreach(Participant p in participants)
 			{
 				if(p.GetStandardDeviation() > maximumParticipantThresholdSD)
 				{
@@ -265,7 +266,7 @@ namespace Experiment1Analysis
 			{
 				participants.Remove (p);
 			}
-			participantsToDrop.Clear();
+			participantsToDrop.Clear();*/
 			
 
 
@@ -385,6 +386,27 @@ namespace Experiment1Analysis
 			return output.ToArray();
 		}
 
+		public void GetTrialThresholds(out float[] trialThresholds, out int[] participantID, out int[] trialID)
+		{
+			List<float> trialThresholdsList = new List<float>(participants.Count * 4);
+			List<int> participantIDList = new List<int>(participants.Count * 4);
+			List<int> trialIDList = new List<int>(participants.Count * 4);
+
+			foreach(Participant p in participants)
+			{
+				foreach(Trial t in p.trials)
+				{
+					trialThresholdsList.Add(t.Threshold);
+					participantIDList.Add(p.ID);
+					trialIDList.Add(t.ID);
+				}
+			}
+
+			trialThresholds = trialThresholdsList.ToArray();
+			participantID = participantIDList.ToArray();
+			trialID = trialIDList.ToArray();			
+		}
+
 		public void PresentParticipant(int ID)
 		{
 			Participant p = null;
@@ -408,6 +430,20 @@ namespace Experiment1Analysis
 			{
 				Console.WriteLine(t);
 			}
+		}
+
+		public Participant GetParticipant(int ID)
+		{
+			Participant p = null;
+			foreach(Participant o in participants)
+			{
+				if(o.ID == ID)
+				{
+					p = o;
+					break;
+				}
+			}
+			 return p;
 		}
 	}
 }

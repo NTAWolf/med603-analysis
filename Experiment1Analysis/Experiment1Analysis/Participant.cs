@@ -184,6 +184,32 @@ namespace Experiment1Analysis
 
 			return output;
 		}
+
+		public List<float> ConcatenateStimuli()
+		{
+			List<float> output = new List<float>(4*10);
+
+			foreach(Trial t in trials)
+			{
+				output.AddRange(t.ConcatenateStimuli());
+			}
+			
+			return output;
+		}
+
+		public Trial GetTrial(int ID)
+		{
+			Trial output = null;
+			foreach(Trial t in trials)
+			{
+				if(t.ID == ID)
+				{
+					output = t;
+					break;
+				}
+			}
+			return output;
+		}
 	}
 }
 

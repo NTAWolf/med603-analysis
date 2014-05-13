@@ -204,6 +204,29 @@ namespace Experiment1Analysis
 			return Statistics.Max(maxCounts.ToArray());
 		}
 
+		public List<float> ConcatenateStimuli()
+		{
+			List<float> output = new List<float>(observations.Length);
+
+			foreach(Observation o in observations)
+			{
+				output.Add(o.stimulus);
+			}
+
+			return output;
+		}
+
+		public List<float> ConcatenateGazeDistances()
+		{
+			List<float> output = new List<float>(observations.Length);
+			
+			foreach(Observation o in observations)
+			{
+				output.AddRange(o.ConcatenateGazeDistances());
+			}
+			
+			return output;
+		}
 	}
 }
 
