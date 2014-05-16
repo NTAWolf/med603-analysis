@@ -30,19 +30,22 @@ namespace Experiment1Analysis
 			double clipObservationDurationMillis = 2000.0;
 			ExperimentData experiment = new ExperimentData(basePath, clipObservationDurationMillis);
 
-			Console.WriteLine();
+			float[] trialThresholds;
+			int[] participantID;
+			int[] trialID;
+
+			experiment.GetTrialThresholds(out trialThresholds, out participantID, out trialID);
+
+
 			Console.WriteLine(experiment.QuickStats());
 			Console.WriteLine();
 			Console.WriteLine(experiment.DiscardBadTrials());
 			Console.WriteLine();
 			Console.WriteLine(experiment.QuickStats());
+			Console.WriteLine();
 
-<<<<<<< HEAD
 			Console.WriteLine(Statistics.GetThresholdValueFromSigmoid(0.5f));
-			//WriteLogisticRegressionDataToCSV(basePath,experiment);
-=======
-			//GetLogisticRegressionCSV(basePath,experiment);
->>>>>>> 84c18327abca38b6bc529b1d884b5043864bff84
+
 		}
 
 		static void WriteLogisticRegressionDataToCSV(string path, ExperimentData experiment)

@@ -223,11 +223,18 @@ namespace Experiment1Analysis
 			                  + "\n\tMinimum number of reverses: " + minimumNumberOfReverses);
 			
 			/*
-			 * Discard users where user is deemed to have had too bad vision (look in notes) 
+			 * Discard users who do not fulfil requirements
 			*/
-			int[] badParticipants = { 1 }; // Participant 1 had bad eyesight
-			List<Participant> participantsToDrop = new List<Participant>(1);
-			
+			int[] badParticipants = { 1, 44 }; // Participant 1 had bad eyesight
+			List<Participant> participantsToDrop = new List<Participant>(2);
+
+			foreach(int i in badParticipants)
+			{
+				Participant p = GetParticipant(i);
+				participantsToDrop.Add(p);
+				output.AppendLine("Dropping " + p + " for not fulfilling formal requirements");
+			}
+
 			foreach(Participant p in participants)
 			{
 				foreach(int i in badParticipants)
@@ -273,26 +280,7 @@ namespace Experiment1Analysis
 			List<Trial> trialsToDrop = new List<Trial>(40);
 
 			foreach(Participant p in participants)
-			{
-				/*
-				 * Discard trials with too few reverses
-				 */
-				foreach(Trial t in p.trials)
-				{
-					if(t.NumberOfReverses < minimumNumberOfReverses)
-					{
-						trialsToDrop.Add(t);
-						output.AppendLine("Dropping trial " + p.ID + "." + t.ID
-						                  + " for having only " + t.NumberOfReverses + " reverses.");
-					}
-				}
-				
-				foreach(Trial t in trialsToDrop)
-				{
-					p.trials.Remove(t);
-				}
-				trialsToDrop.Clear();
-
+			{			
 				/*
 				 * Discard trials where user gaze deviated too much for too long from the marker
 				 */
@@ -306,6 +294,25 @@ namespace Experiment1Analysis
 						                  + " for deviating more than "
 						                  + maximumGazeDeviationDistance + " pixels for "
 						                  + max + " readings.");
+					}
+				}
+				
+				foreach(Trial t in trialsToDrop)
+				{
+					p.trials.Remove(t);
+				}
+				trialsToDrop.Clear();
+
+				/*
+				 * Discard trials with too few reverses
+				 */
+				foreach(Trial t in p.trials)
+				{
+					if(t.NumberOfReverses < minimumNumberOfReverses)
+					{
+						trialsToDrop.Add(t);
+						output.AppendLine("Dropping trial " + p.ID + "." + t.ID
+						                  + " for having only " + t.NumberOfReverses + " reverses.");
 					}
 				}
 				
